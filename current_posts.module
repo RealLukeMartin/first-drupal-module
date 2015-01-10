@@ -64,33 +64,42 @@ function current_posts_contents() {
 }
 
 function current_posts_block_view($delta = '') {
-	switch ($delta) {
-		case 'current_posts':
-			$block['subject'] = t('Current posts');
-			if(user_access('access content')) {
-				//Retrieve and process data here.
+	global $user;
+	$account = $user;
+    $block['content'] = t('Hello @user from IP @host',array(
+        '@user' => format_username($user), 
+        '@host' => $account->hostname
+    ));
 
-				//Use our custom function to retrieve data.
-				$result = current_posts_contents();
-				//Array to contain items for the block to render.
-				$items = array();
-				//Iterate over the result set and format as links.
-				foreach ($result as $node) {
-					$items[] = array(
-						'data' => l($node->title, 'node/' . $node->nid),
-					);
-				}
-				//No content in the last week.
-				if (empty($items)) {
-					$block['content'] = t('No posts available');
-				}
-				else {
-					//Pass data through theme function
-					$block['content'] = theme('item_list', array(
-						'items' => $items));
-				}
-			}
-		return $block;
-	}
+	return $block;
+
+	// switch ($delta) {
+	// 	case 'current_posts':
+	// 		$block['subject'] = t('Current posts');
+	// 		if(user_access('access content')) {
+	// 			//Retrieve and process data here.
+
+	// 			//Use our custom function to retrieve data.
+	// 			$result = current_posts_contents();
+	// 			//Array to contain items for the block to render.
+	// 			$items = array();
+	// 			//Iterate over the result set and format as links.
+	// 			foreach ($result as $node) {
+	// 				$items[] = array(
+	// 					'data' => l($node->title, 'node/' . $node->nid),
+	// 				);
+	// 			}
+	// 			//No content in the last week.
+	// 			if (empty($items)) {
+	// 				$block['content'] = t('No posts available');
+	// 			}
+	// 			else {
+	// 				//Pass data through theme function
+	// 				$block['content'] = theme('item_list', array(
+	// 					'items' => $items));
+	// 			}
+	// 		}
+	// 	return $block;
+	// }
 }
 

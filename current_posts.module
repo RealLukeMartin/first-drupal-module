@@ -71,6 +71,20 @@ function current_posts_block_view($delta = '') {
         '@host' => $account->hostname
     ));
 
+    $result = db_select('node', 'a')
+    	->fields('a', array('title'))
+    	->execute();
+
+    foreach($result as $node) { 
+      $items[] = array(
+      'data' => t($node->title)
+      );
+    }
+  	
+  	$block['content'] .= theme('item_list', array(
+      'items' => $items
+    ));
+    
 	return $block;
 
 	// switch ($delta) {
